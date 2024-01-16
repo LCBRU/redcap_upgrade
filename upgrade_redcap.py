@@ -62,22 +62,23 @@ def select_server():
 
 upgrade_file = select_upgrade_file()
 
-with tempfile.TemporaryDirectory() as tmpdirname:
-    with zipfile.ZipFile(upgrade_file, 'r') as zip_ref:
-        console.print(f'Unzipping file {upgrade_file} ...')
-        zip_ref.extractall(tmpdirname)
+if upgrade_file:
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        with zipfile.ZipFile(upgrade_file, 'r') as zip_ref:
+            console.print(f'Unzipping file {upgrade_file} ...')
+            zip_ref.extractall(tmpdirname)
 
-    redcap_folder = next(Path(tmpdirname).glob('redcap/redcap_*'))
+        redcap_folder = next(Path(tmpdirname).glob('redcap/redcap_*'))
 
-    while redcap_folder:
-        server = select_server()
+        while redcap_folder:
+            server = select_server()
 
-        if not server:
-            break
+            if not server:
+                break
 
-        console.clear()
-        console.print(f'Sending upgrade package to server...')
+            console.clear()
+            console.print(f'Sending upgrade package to server...')
 
-        subprocess.check_output(['scp', '-r', redcap_folder, f'{server}:/local/www/htdocs'])
+            subprocess.check_output(['scp', '-r', redcap_folder, f'{server}:/local/www/htdocs'])
 
-        Prompt.ask("Package copied.  Complete the upgrade in the REDCap front end...")
+            Prompt.ask("Package copied.  Complete the upgrade in the REDCap front end...")
