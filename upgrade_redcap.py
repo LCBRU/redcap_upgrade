@@ -68,7 +68,7 @@ if upgrade_file:
             console.print(f'Unzipping file {upgrade_file} ...')
             zip_ref.extractall(tmpdirname)
 
-        redcap_folder = next(Path(tmpdirname).glob('redcap/redcap_*'))
+        redcap_folder = next(Path(tmpdirname).glob('redcap/redcap_[0-9]*'))
 
         while redcap_folder:
             server = select_server()
