@@ -79,6 +79,9 @@ if upgrade_file:
             console.clear()
             console.print(f'Sending upgrade package to server...')
 
+            print(redcap_folder)
+            print(server)
+
             subprocess.check_output(['scp', '-r', redcap_folder, f'{server}:/local/www/htdocs'])
 
             Prompt.ask("Package copied.  Complete the upgrade in the REDCap front end...")
